@@ -1,0 +1,1 @@
+// Pie chart score component
