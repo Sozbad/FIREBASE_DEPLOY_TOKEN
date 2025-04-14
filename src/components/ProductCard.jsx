@@ -1,4 +1,5 @@
 import React from 'react';
+import HazardIcons from './HazardIcons';
 
 export default function ProductCard({ product }) {
   const score = product.score || 0;
@@ -11,31 +12,23 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <div className="p-4 rounded-2xl shadow-md border bg-white">
-      <div className="flex justify-between items-center mb-2">
-        <h2 className="text-lg font-semibold text-gray-900">{product.name}</h2>
+    <div className="p-4 rounded-2xl shadow-md border border-gray-100 bg-white transition hover:shadow-lg">
+      <div className="flex justify-between items-start mb-3">
+        <h2 className="text-lg font-semibold text-gray-900 leading-snug">{product.name}</h2>
         <div
-          className={`text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center ${getScoreColor()}`}
+          className={`text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${getScoreColor()}`}
+          title={`EcoRank Score: ${score}/10`}
         >
           {score}
         </div>
       </div>
 
       {product.description && (
-        <p className="text-sm text-gray-600 mb-2">{product.description}</p>
+        <p className="text-sm text-gray-600 mb-3">{product.description}</p>
       )}
 
       {product.hazards && product.hazards.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-2">
-          {product.hazards.map((hazard, i) => (
-            <span
-              key={i}
-              className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full"
-            >
-              ⚠️ {hazard}
-            </span>
-          ))}
-        </div>
+        <HazardIcons hazards={product.hazards} />
       )}
     </div>
   );
