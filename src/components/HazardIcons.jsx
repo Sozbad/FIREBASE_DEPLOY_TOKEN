@@ -1,38 +1,30 @@
 import React from 'react';
 
-const hazardIconMap = {
-  Flammable: 'flammable.svg',
-  Corrosive: 'corrosive.svg',
-  Environment: 'environment.svg',
-  Toxic: 'toxic.svg',
-  Explosive: 'explosive.svg',
-  'Health Hazard': 'health_hazard.svg',
-  'Gas Cylinder': 'gas_cylinder.svg',
-  Oxidizing: 'oxidizing.svg',
-  'Skull & Crossbones': 'skull.svg'
+const iconMap = {
+  Flammable: '/icons/flame.svg',
+  Corrosive: '/icons/corrosive.svg',
+  Toxic: '/icons/toxic.svg',
+  Environment: '/icons/environment.svg',
+  Explosive: '/icons/explosive.svg',
+  Gas: '/icons/gas.svg',
+  Health: '/icons/health.svg',
+  Irritant: '/icons/exclamation.svg',
+  Oxidizer: '/icons/oxidizer.svg'
 };
 
-export default function HazardIcons({ hazards = [] }) {
+export default function HazardIcons({ hazards }) {
   return (
-    <div className="flex flex-wrap gap-2 mt-2">
-      {hazards.map((hazard, i) => {
-        const icon = hazardIconMap[hazard] || null;
-        return (
-          <div key={i} className="w-10 h-10" title={hazard}>
-            {icon ? (
-              <img
-                src={`/icons/${icon}`}
-                alt={hazard}
-                className="w-full h-full object-contain border border-gray-200 rounded-lg bg-white shadow-sm"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-xs text-gray-500 border rounded">
-                {hazard}
-              </div>
-            )}
-          </div>
-        );
-      })}
+    <div className="flex flex-wrap gap-2">
+      {hazards.map((hazard, i) => (
+        <div key={i} className="flex items-center gap-1 text-xs text-gray-700 bg-gray-100 px-2 py-1 rounded-full">
+          <img
+            src={iconMap[hazard] || '/icons/warning.svg'}
+            alt={hazard}
+            className="w-4 h-4"
+          />
+          {hazard}
+        </div>
+      ))}
     </div>
   );
 }
