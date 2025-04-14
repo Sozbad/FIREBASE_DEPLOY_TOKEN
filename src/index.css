@@ -1,8 +1,1 @@
-/* Basic global styles */
-
-body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f9f9f9;
-}
+body { margin: 0; font-family: sans-serif; background: #f4f4f4; }

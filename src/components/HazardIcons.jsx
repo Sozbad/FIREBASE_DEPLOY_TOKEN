@@ -1,1 +1,1 @@
-// GHS icon renderer
+// GHS icon component

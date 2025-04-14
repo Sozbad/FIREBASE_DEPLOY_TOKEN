@@ -1,1 +1,1 @@
-// Homepage component
+// Home page component

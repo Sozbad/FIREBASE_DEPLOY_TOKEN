@@ -1,0 +1,1 @@
+// GHS hazard definitions by key

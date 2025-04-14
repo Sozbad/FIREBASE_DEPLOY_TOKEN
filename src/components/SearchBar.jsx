@@ -1,1 +1,1 @@
-// Autocomplete search bar
+// Search bar with autocomplete logic

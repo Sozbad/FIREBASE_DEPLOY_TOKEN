@@ -1,1 +1,3 @@
-# EcoRank Final Production Frontend
+# EcoRank Production Frontend
+
+All production code and structure.

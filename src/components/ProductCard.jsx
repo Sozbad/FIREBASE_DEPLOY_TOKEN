@@ -1,1 +1,1 @@
-// UI for product display
+// Product display card layout

@@ -1,1 +1,1 @@
-// Score pie chart visual
+// Recharts pie chart for score

@@ -1,0 +1,1 @@
+// Firebase init and Firestore export placeholder
