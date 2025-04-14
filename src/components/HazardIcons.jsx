@@ -14,15 +14,18 @@ const iconMap = {
 
 export default function HazardIcons({ hazards }) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2 mt-2">
       {hazards.map((hazard, i) => (
-        <div key={i} className="flex items-center gap-1 text-xs text-gray-700 bg-gray-100 px-2 py-1 rounded-full">
+        <div
+          key={i}
+          className="flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-200 shadow-sm text-gray-800 text-xs font-medium"
+        >
           <img
             src={iconMap[hazard] || '/icons/warning.svg'}
             alt={hazard}
             className="w-4 h-4"
           />
-          {hazard}
+          <span>{hazard}</span>
         </div>
       ))}
     </div>
