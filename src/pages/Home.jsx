@@ -1,11 +1,11 @@
-// src/pages/Home.jsx
 import React from 'react';
+import ProductSearch from '../components/ProductSearch';
 
 export default function Home() {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-2">EcoRank</h1>
-      <p>Search for products to see their safety and eco impact.</p>
+    <div className="p-4 pt-6 pb-16">
+      <h1 className="text-xl font-semibold mb-4">Search Products</h1>
+      <ProductSearch />
     </div>
   );
 }
