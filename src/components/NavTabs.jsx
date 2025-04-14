@@ -5,15 +5,15 @@ export default function NavTabs() {
   const { pathname } = useLocation();
 
   const tabs = [
-    { to: '/', label: 'Search', icon: Search },
-    { to: '/blog', label: 'Blog', icon: BookText },
-    { to: '/admin-import', label: 'Admin', icon: Upload }
+    { to: '/', label: 'Search', icon: Search, fallback: '🔍' },
+    { to: '/blog', label: 'Blog', icon: BookText, fallback: '📚' },
+    { to: '/admin-import', label: 'Admin', icon: Upload, fallback: '⬆️' }
   ];
 
   return (
     <nav className="fixed bottom-0 w-full bg-white border-t shadow-inner z-50">
       <div className="flex justify-around py-2">
-        {tabs.map(({ to, label, icon: Icon }) => {
+        {tabs.map(({ to, label, icon: Icon, fallback }) => {
           const isActive = pathname === to;
           return (
             <Link
@@ -23,7 +23,11 @@ export default function NavTabs() {
                 isActive ? 'text-black font-semibold' : 'text-gray-400'
               }`}
             >
-              <Icon size={20} />
+              {Icon ? (
+                <Icon size={20} />
+              ) : (
+                <span className="text-lg">{fallback}</span>
+              )}
               <span className="mt-1">{label}</span>
             </Link>
           );
