@@ -1,38 +1,44 @@
-import { Search, BookText, Upload } from 'lucide-react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import {
+  Home,
+  Info,
+  BookOpen,
+  Clock,
+  Shield,
+  Upload
+} from 'lucide-react';
+
+const tabs = [
+  { label: 'Home', path: '/', icon: Home },
+  { label: 'About', path: '/about', icon: Info },
+  { label: 'Blog', path: '/blog', icon: BookOpen },
+  { label: 'History', path: '/history', icon: Clock },
+  { label: 'Admin', path: '/admin', icon: Upload }
+];
 
 export default function NavTabs() {
-  const { pathname } = useLocation();
-
-  const tabs = [
-    { to: '/', label: 'Search', icon: Search, fallback: '🔍' },
-    { to: '/blog', label: 'Blog', icon: BookText, fallback: '📚' },
-    { to: '/admin-import', label: 'Admin', icon: Upload, fallback: '⬆️' }
-  ];
+  const location = useLocation();
 
   return (
-    <nav className="fixed bottom-0 w-full bg-white border-t shadow-inner z-50">
-      <div className="flex justify-around py-2">
-        {tabs.map(({ to, label, icon: Icon, fallback }) => {
-          const isActive = pathname === to;
-          return (
-            <Link
-              key={to}
-              to={to}
-              className={`flex flex-col items-center text-xs transition-all ${
-                isActive ? 'text-black font-semibold' : 'text-gray-400'
-              }`}
-            >
-              {Icon ? (
-                <Icon size={20} />
-              ) : (
-                <span className="text-lg">{fallback}</span>
-              )}
-              <span className="mt-1">{label}</span>
-            </Link>
-          );
-        })}
-      </div>
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t shadow-inner px-4 py-2 flex justify-around">
+      {tabs.map((tab) => {
+        const isActive = location.pathname === tab.path;
+        const Icon = tab.icon;
+
+        return (
+          <Link
+            key={tab.path}
+            to={tab.path}
+            className={`flex flex-col items-center text-xs font-medium ${
+              isActive ? 'text-green-600' : 'text-gray-500'
+            }`}
+          >
+            <Icon className="w-5 h-5 mb-0.5" />
+            {tab.label}
+          </Link>
+        );
+      })}
     </nav>
   );
 }
