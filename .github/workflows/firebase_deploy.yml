@@ -1,9 +1,7 @@
-name: Deploy to Firebase
-
+name: Firebase Deploy Workflow
 on:
   push:
     branches: [main]
-
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
