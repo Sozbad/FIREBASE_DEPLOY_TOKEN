@@ -14,47 +14,43 @@ export default function ProductCard({ product }) {
 
   return (
     <div
-      className="flex gap-4 items-start p-4 rounded-xl shadow-md border border-gray-200 bg-white hover:shadow-lg transition cursor-pointer"
       onClick={() => navigate('/detail', { state: product })}
+      className="bg-white rounded-xl shadow-md border hover:shadow-lg transition cursor-pointer overflow-hidden"
     >
-      {/* Image */}
-      <img
-        src={product.image || '/icons/placeholder.svg'}
-        alt={product.name}
-        className="w-16 h-16 rounded-lg object-cover border bg-gray-50"
-      />
+      <div className="flex flex-col items-center p-4">
+        <img
+          src={product.image || '/icons/placeholder.svg'}
+          alt={product.name}
+          className="w-20 h-20 object-contain mb-2"
+        />
 
-      {/* Main content */}
-      <div className="flex-1 space-y-1">
-        <div className="flex justify-between items-center">
-          <h2 className="text-sm font-semibold text-gray-900">{product.name}</h2>
-          <span className={`text-white text-xs font-bold px-2 py-1 rounded-full ${getScoreColor()}`}>
-            {score}/10
-          </span>
-        </div>
-
-        {product.function && (
-          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
-            {product.function}
-          </span>
-        )}
-
-        {product.description && (
-          <p className="text-xs text-gray-600">{product.description}</p>
-        )}
-
-        {product.hazards && product.hazards.length > 0 && (
-          <div className="flex flex-wrap gap-2 pt-1">
-            {product.hazards.map((hazard, i) => (
-              <span
-                key={i}
-                className="text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full"
-              >
-                ⚠️ {hazard}
-              </span>
-            ))}
+        <div className="w-full">
+          <div className="flex justify-between items-center mb-1">
+            <h2 className="text-sm font-medium text-gray-800">{product.name}</h2>
+            <div
+              className={`text-white text-xs px-2 py-1 rounded-full font-bold ${getScoreColor()}`}
+            >
+              {score}/10
+            </div>
           </div>
-        )}
+
+          {product.function && (
+            <div className="text-xs text-gray-500 mb-1">{product.function}</div>
+          )}
+
+          {product.hazards?.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {product.hazards.slice(0, 3).map((hazard, i) => (
+                <span
+                  key={i}
+                  className="text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full"
+                >
+                  ⚠️ {hazard}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
