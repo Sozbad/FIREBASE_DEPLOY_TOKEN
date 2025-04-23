@@ -14,34 +14,48 @@ export default function ProductCard({ product }) {
 
   return (
     <div
-      className="p-4 rounded-2xl shadow-md border bg-white cursor-pointer hover:shadow-lg transition"
+      className="flex gap-4 items-start p-4 rounded-xl shadow-md border border-gray-200 bg-white hover:shadow-lg transition cursor-pointer"
       onClick={() => navigate('/detail', { state: product })}
     >
-      <div className="flex justify-between items-center mb-2">
-        <h2 className="text-lg font-semibold text-gray-900">{product.name}</h2>
-        <div
-          className={`text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center ${getScoreColor()}`}
-        >
-          {score}
+      {/* Image */}
+      <img
+        src={product.image || '/icons/placeholder.svg'}
+        alt={product.name}
+        className="w-16 h-16 rounded-lg object-cover border bg-gray-50"
+      />
+
+      {/* Main content */}
+      <div className="flex-1 space-y-1">
+        <div className="flex justify-between items-center">
+          <h2 className="text-sm font-semibold text-gray-900">{product.name}</h2>
+          <span className={`text-white text-xs font-bold px-2 py-1 rounded-full ${getScoreColor()}`}>
+            {score}/10
+          </span>
         </div>
+
+        {product.function && (
+          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
+            {product.function}
+          </span>
+        )}
+
+        {product.description && (
+          <p className="text-xs text-gray-600">{product.description}</p>
+        )}
+
+        {product.hazards && product.hazards.length > 0 && (
+          <div className="flex flex-wrap gap-2 pt-1">
+            {product.hazards.map((hazard, i) => (
+              <span
+                key={i}
+                className="text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full"
+              >
+                ⚠️ {hazard}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
-
-      {product.description && (
-        <p className="text-sm text-gray-600 mb-2">{product.description}</p>
-      )}
-
-      {product.hazards && product.hazards.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-2">
-          {product.hazards.map((hazard, i) => (
-            <span
-              key={i}
-              className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full"
-            >
-              ⚠️ {hazard}
-            </span>
-          ))}
-        </div>
-      )}
     </div>
   );
 }
