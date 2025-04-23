@@ -1,7 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import HazardIcons from './HazardIcons';
-import ScorePieChart from './ScorePieChart';
 
 export default function ProductCard({ product }) {
   const navigate = useNavigate();
@@ -20,7 +18,7 @@ export default function ProductCard({ product }) {
       onClick={() => navigate('/detail', { state: product })}
     >
       <div className="flex justify-between items-center mb-2">
-        <h2 className="text-lg font-semibold text-gray-900 truncate w-5/6">{product.name}</h2>
+        <h2 className="text-lg font-semibold text-gray-900">{product.name}</h2>
         <div
           className={`text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center ${getScoreColor()}`}
         >
@@ -29,22 +27,21 @@ export default function ProductCard({ product }) {
       </div>
 
       {product.description && (
-        <p className="text-sm text-gray-600 mb-2 line-clamp-2">{product.description}</p>
+        <p className="text-sm text-gray-600 mb-2">{product.description}</p>
       )}
 
       {product.hazards && product.hazards.length > 0 && (
         <div className="flex flex-wrap gap-2 mt-2">
-          <HazardIcons hazards={product.hazards} />
+          {product.hazards.map((hazard, i) => (
+            <span
+              key={i}
+              className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full"
+            >
+              ⚠️ {hazard}
+            </span>
+          ))}
         </div>
       )}
-
-      <div className="mt-4">
-        <ScorePieChart
-          healthScore={product.health || 0}
-          envScore={product.environment || 0}
-          disposalScore={product.disposal || 0}
-        />
-      </div>
     </div>
   );
 }
