@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "name": "WD-40",
+    "score": 7.2,
+    "function": "Multi-purpose lubricant",
+    "description": "Loosens rusted parts and protects metal.",
+    "hazards": ["Health", "Flammable"],
+    "image": "/icons/lubricant.svg"
+  },
+  {
+    "id": "2",
+    "name": "EcoDegrease",
+    "score": 9.5,
+    "function": "Degreaser",
+    "description": "Eco-friendly degreaser for kitchens & tools.",
+    "hazards": ["Irritant"],
+    "image": "/icons/degreaser.svg"
+  }
+]
