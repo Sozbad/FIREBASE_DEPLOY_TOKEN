@@ -1,80 +1,88 @@
-import React, { useEffect, useState } from 'react';
-import ProductSearch from '../components/ProductSearch';
-import ProductCard from '../components/ProductCard';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase';
+import React from "react";
+import ProductCard from "@/components/ProductCard";
+import ScoreBreakdownPie from "@/components/ScoreBreakdownPie";
 
-export default function Home() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const querySnapshot = await getDocs(collection(db, 'products'));
-      const uniqueMap = new Map();
-
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const key = data.name?.toLowerCase().trim(); // de-dupe by name
-        if (key && !uniqueMap.has(key)) {
-          uniqueMap.set(key, { id: doc.id, ...data });
-        }
-      });
-
-      setProducts(Array.from(uniqueMap.values()));
-    };
-
-    fetchProducts();
-  }, []);
-
+const HomePage = () => {
   return (
-    <div className="min-h-screen bg-[#f2fdf5] text-gray-800">
-      {/* Top Navigation Bar */}
-      <header className="bg-[#c6e5cc] py-3 shadow-sm sticky top-0 z-20">
-        <div className="max-w-6xl mx-auto px-4 flex justify-between items-center">
-          <h1 className="font-bold text-lg">EcoRank</h1>
-          <nav className="flex gap-4 text-sm font-medium">
-            <a href="/" className="hover:underline">About</a>
-            <a href="/" className="hover:underline">Blog</a>
-            <a href="/" className="hover:underline">History</a>
-            <a href="/" className="hover:underline">Admin Upload</a>
-            <a href="/" className="hover:underline">Dev Upload Tools</a>
+    <div className="min-h-screen bg-[#e6f4e8]">
+      {/* Top nav */}
+      <header className="bg-[#2e7d32] text-white p-4 sticky top-0 z-50 shadow-md">
+        <div className="max-w-4xl mx-auto flex justify-between items-center">
+          <h1 className="text-lg font-bold tracking-wide">EcoRank</h1>
+          <nav className="space-x-4 text-sm">
+            <a href="/search" className="hover:underline">Search</a>
+            <a href="/blog" className="hover:underline">Blog</a>
+            <a href="/about" className="hover:underline">About</a>
+            <a href="/history" className="hover:underline">History</a>
+            <a href="/admin" className="hover:underline">Dev Upload Tools</a>
           </nav>
         </div>
       </header>
 
-      {/* Intro Panel */}
-      <div className="max-w-xl mx-auto text-center bg-[#f2fdf5] mt-6 px-4">
-        <h2 className="text-xl font-bold mb-4">Find greener and safer product swaps</h2>
-        <div className="grid grid-cols-3 gap-4 text-sm">
-          <div className="flex flex-col items-center">
-            <img src="/icons/search.svg" alt="Search" className="w-8 h-8 mb-1" />
-            <p>Scan or search for a product</p>
+      {/* Hero */}
+      <section className="text-center py-10 px-4">
+        <h2 className="text-2xl md:text-3xl font-bold text-[#2e7d32] mb-4">
+          Find greener and safer product swaps
+        </h2>
+        <p className="text-sm text-gray-700 max-w-xl mx-auto">
+          Scan or search for a product to see its environmental impact, health hazards, and safer alternatives.
+        </p>
+      </section>
+
+      {/* How it works */}
+      <section className="bg-white rounded-xl shadow-md mx-4 p-6 max-w-3xl mx-auto">
+        <h3 className="text-lg font-semibold mb-4 text-gray-800">How it works</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+          <div>
+            <div className="text-4xl mb-2">🔍</div>
+            <p className="text-sm">Search for a product or scan its barcode</p>
           </div>
-          <div className="flex flex-col items-center">
-            <img src="/icons/chart.svg" alt="Score" className="w-8 h-8 mb-1" />
-            <p>See its hazard rating</p>
+          <div>
+            <div className="text-4xl mb-2">🧪</div>
+            <p className="text-sm">View safety rating and hazard breakdown</p>
           </div>
-          <div className="flex flex-col items-center">
-            <img src="/icons/swap.svg" alt="Swap" className="w-8 h-8 mb-1" />
-            <p>Get safer alternatives</p>
+          <div>
+            <div className="text-4xl mb-2">♻️</div>
+            <p className="text-sm">Get better alternatives with higher scores</p>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Search Bar */}
-      <div className="max-w-2xl mx-auto px-4 mt-10">
-        <ProductSearch />
-      </div>
-
-      {/* Product Grid */}
-      <div className="max-w-6xl mx-auto px-4 mt-12">
-        <h3 className="text-lg font-semibold mb-4">Popular:</h3>
-        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+      {/* Popular products (sample cards) */}
+      <section className="mt-10 px-4 max-w-5xl mx-auto">
+        <h3 className="text-lg font-semibold mb-4 text-gray-800">Popular Products</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <ProductCard
+            name="CleanMax Multi-Surface"
+            imageUrl="/images/sample1.jpg"
+            score={7.8}
+            health={8}
+            environment={6}
+            handling={9}
+            hazards={["GHS07", "GHS09"]}
+          />
+          <ProductCard
+            name="UltraShine Glass Cleaner"
+            imageUrl="/images/sample2.jpg"
+            score={5.2}
+            health={4}
+            environment={5}
+            handling={6.5}
+            hazards={["GHS05"]}
+          />
+          <ProductCard
+            name="EcoWipe Floor Wash"
+            imageUrl="/images/sample3.jpg"
+            score={9.1}
+            health={9}
+            environment={9}
+            handling={9.5}
+            hazards={[]}
+          />
         </div>
-      </div>
+      </section>
     </div>
   );
-}
+};
+
+export default HomePage;
