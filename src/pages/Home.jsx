@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ProductSearch from '../components/ProductSearch';
 import ProductCard from '../components/ProductCard';
-import sampleData from '../data/mockProducts.json'; // optional placeholder products
 
 export default function Home() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    import('../data/mockProducts.json')
+      .then((module) => setProducts(module.default))
+      .catch((err) => console.error('❌ Failed to load mockProducts.json', err));
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#f2fdf5] text-gray-800">
       {/* Top Navigation Bar */}
@@ -38,16 +45,16 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Search bar */}
+      {/* Search Bar */}
       <div className="max-w-2xl mx-auto px-4 mt-8">
         <ProductSearch />
       </div>
 
-      {/* Popular Products */}
+      {/* Product Grid */}
       <div className="max-w-6xl mx-auto px-4 mt-12">
         <h3 className="text-lg font-semibold mb-4">Popular:</h3>
         <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
-          {sampleData.map((product, i) => (
+          {products.map((product, i) => (
             <ProductCard key={i} product={product} />
           ))}
         </div>
