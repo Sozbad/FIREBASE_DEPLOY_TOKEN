@@ -12,6 +12,10 @@ export default function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [swaps, setSwaps] = useState([]);
 
+  // Helper to calculate average score
+  const getAvgScore = (p) =>
+    (Number(p.health || 0) + Number(p.environment || 0) + Number(p.handling || 0)) / 3;
+
   useEffect(() => {
     const fetchProduct = async () => {
       const ref = doc(db, 'products', id);
@@ -20,12 +24,19 @@ export default function ProductDetail() {
         const data = snap.data();
         setProduct(data);
 
-        // now fetch better swaps
+        // fetch all, filter better matches
         const all = await getDocs(collection(db, 'products'));
-        const filtered = all.docs
-          .map((d) => ({ id: d.id, ...d.data() }))
-          .filter((p) => p.function === data.function && p.score > data.score && p.id !== id);
-        setSwaps(filtered);
+        const allData = all.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+        const alternatives = allData.filter((p) =>
+          p.id !== id &&
+          p.function &&
+          data.function &&
+          p.function === data.function &&
+          getAvgScore(p) > getAvgScore(data)
+        );
+
+        setSwaps(alternatives);
       }
     };
 
@@ -54,10 +65,14 @@ export default function ProductDetail() {
           environment={product.environment}
           handling={product.handling}
         />
-        <div className="mt-4">
-          <HazardIcons codes={product.hazards} />
-        </div>
-        <p className="text-sm text-gray-600 mt-4">Function: <strong>{product.function || 'Uncategorized'}</strong></p>
+        {product.hazards?.length > 0 && (
+          <div className="mt-4">
+            <HazardIcons codes={product.hazards} />
+          </div>
+        )}
+        <p className="text-sm text-gray-600 mt-4">
+          Function: <strong>{product.function || 'Uncategorized'}</strong>
+        </p>
       </div>
 
       {swaps.length > 0 && (
