@@ -15,47 +15,37 @@ export default function History() {
   };
 
   return (
-    <div className="min-h-screen pb-28 bg-white">
-      <div className="px-6 pt-8 pb-4 bg-gradient-to-br from-yellow-100 to-white rounded-b-3xl shadow-sm">
-        <h1 className="text-2xl font-bold text-gray-900">Search History</h1>
-        <p className="text-sm text-gray-600 mt-1">Your recently searched products</p>
-      </div>
+    <div className="min-h-screen bg-white px-6 py-10 max-w-2xl mx-auto">
+      <h1 className="text-2xl font-bold text-[#2e7d32] mb-4">Search History</h1>
+      <p className="text-sm text-gray-600 mb-6">Your recently searched product terms.</p>
 
-      <div className="px-6 py-6">
-        {items.length === 0 ? (
-          <p className="text-sm text-gray-600">No recent searches found.</p>
-        ) : (
-          <>
-            <div className="space-y-3">
-              {items.map((term, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between bg-gray-50 border px-4 py-3 rounded-xl shadow-sm"
-                >
-                  <div className="flex items-center gap-2 text-sm text-gray-800">
-                    <Clock className="w-4 h-4 text-gray-500" />
-                    {term}
-                  </div>
-                  <button
-                    onClick={() => window.location.href = `/?q=${encodeURIComponent(term)}`}
-                    className="text-xs text-blue-600 font-medium hover:underline"
-                  >
-                    Search again
-                  </button>
-                </div>
-              ))}
+      {items.length === 0 ? (
+        <p className="text-sm text-gray-500">No recent searches found.</p>
+      ) : (
+        <div className="space-y-4">
+          {items.map((term, i) => (
+            <div key={i} className="flex justify-between items-center bg-gray-50 border px-4 py-3 rounded-xl shadow-sm">
+              <div className="flex items-center gap-2 text-sm text-gray-800">
+                <Clock className="w-4 h-4 text-gray-500" />
+                {term}
+              </div>
+              <button
+                onClick={() => (window.location.href = `/?q=${encodeURIComponent(term)}`)}
+                className="text-xs text-blue-600 hover:underline"
+              >
+                Search again
+              </button>
             </div>
-
-            <button
-              onClick={clearHistory}
-              className="mt-6 text-sm text-red-600 hover:underline flex items-center gap-1"
-            >
-              <Trash2 className="w-4 h-4" />
-              Clear all history
-            </button>
-          </>
-        )}
-      </div>
+          ))}
+          <button
+            onClick={clearHistory}
+            className="text-sm text-red-600 hover:underline mt-6 flex items-center gap-1"
+          >
+            <Trash2 className="w-4 h-4" />
+            Clear all history
+          </button>
+        </div>
+      )}
     </div>
   );
 }
