@@ -1,21 +1,27 @@
 import React from "react";
 import { PieChart, Pie, Cell } from "recharts";
 
+// Get color based on score
 const getColor = (score) => {
   if (score >= 7) return "#4CAF50"; // Green
   if (score >= 4) return "#FF9800"; // Orange
   return "#F44336"; // Red
 };
 
-const ScoreBreakdownPie = ({ health, environment, handling }) => {
+const ScoreBreakdownPie = ({ health = 0, environment = 0, handling = 0 }) => {
+  // Ensure we never pass undefined
+  const safeHealth = Number(health || 0);
+  const safeEnv = Number(environment || 0);
+  const safeHandling = Number(handling || 0);
+
   const data = [
-    { name: "Health", value: 1, score: health },
-    { name: "Environment", value: 1, score: environment },
-    { name: "Handling", value: 1, score: handling },
+    { name: "Health", value: 1, score: safeHealth },
+    { name: "Environment", value: 1, score: safeEnv },
+    { name: "Handling", value: 1, score: safeHandling },
   ];
 
   const COLORS = data.map((d) => getColor(d.score));
-  const average = Math.round(((health + environment + handling) / 3) * 10) / 10;
+  const average = ((safeHealth + safeEnv + safeHandling) / 3).toFixed(1);
 
   return (
     <div className="relative w-20 h-20">
@@ -34,7 +40,7 @@ const ScoreBreakdownPie = ({ health, environment, handling }) => {
         </Pie>
       </PieChart>
       <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-gray-800">
-        {average}
+        {isNaN(average) ? "0.0" : average}
       </div>
     </div>
   );
