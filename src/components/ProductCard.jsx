@@ -13,7 +13,7 @@ const ProductCard = ({ name, imageUrl, score, health, environment, handling, haz
       <h4 className="text-sm font-semibold mb-1 text-gray-800 line-clamp-2">{name}</h4>
       <ScoreBreakdownPie health={health} environment={environment} handling={handling} />
       <div className="mt-2">
-        <HazardIcons codes={hazards} />
+<HazardIcons codes={hazards || []} />
       </div>
     </div>
   );
