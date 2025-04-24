@@ -6,6 +6,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import History from './pages/History';
 import AdminImport from './pages/AdminImport';
+import ProductDetail from './pages/ProductDetail'; // ✅ new
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/history" element={<History />} />
         <Route path="/adminimport" element={<AdminImport />} />
+        <Route path="/product/:id" element={<ProductDetail />} /> {/* ✅ new */}
       </Routes>
     </Router>
   );
