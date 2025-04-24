@@ -1,6 +1,6 @@
 import React from "react";
-import ScoreBreakdownPie from "@/components/ScoreBreakdownPie";
-import HazardIcons from "@/components/HazardIcons";
+import ScoreBreakdownPie from "./ScoreBreakdownPie";
+import HazardIcons from "./HazardIcons";
 
 const ProductCard = ({ name, imageUrl, score, health, environment, handling, hazards }) => {
   return (
