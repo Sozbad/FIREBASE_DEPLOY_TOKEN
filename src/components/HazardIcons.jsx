@@ -1,25 +1,33 @@
 import React from 'react';
 
-const hazardMap = {
-  Health: { emoji: '🧬', color: 'text-red-600 bg-red-100' },
-  Environmental: { emoji: '🌿', color: 'text-orange-600 bg-orange-100' },
-  Handling: { emoji: '🧤', color: 'text-green-600 bg-green-100' },
+const iconMap = {
+  Flammable: '/icons/flame.svg',
+  Corrosive: '/icons/corrosive.svg',
+  Toxic: '/icons/toxic.svg',
+  Environment: '/icons/environment.svg',
+  Explosive: '/icons/explosive.svg',
+  Gas: '/icons/gas.svg',
+  Health: '/icons/health.svg',
+  Irritant: '/icons/exclamation.svg',
+  Oxidizer: '/icons/oxidizer.svg'
 };
 
-export default function HazardIcons({ hazards }) {
+export default function HazardIcons({ hazards = [] }) {
   return (
-    <>
-      {hazards.map((h, i) => {
-        const config = hazardMap[h] || { emoji: '⚠️', color: 'text-gray-600 bg-gray-100' };
-        return (
-          <span
-            key={i}
-            className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${config.color}`}
-          >
-            {config.emoji} {h}
-          </span>
-        );
-      })}
-    </>
+    <div className="flex flex-wrap gap-2 mt-2">
+      {(hazards || []).map((hazard, i) => (
+        <div
+          key={i}
+          className="flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-200 shadow-sm text-gray-800 text-xs font-medium"
+        >
+          <img
+            src={iconMap[hazard] || '/icons/warning.svg'}
+            alt={hazard}
+            className="w-4 h-4"
+          />
+          <span>{hazard}</span>
+        </div>
+      ))}
+    </div>
   );
 }
