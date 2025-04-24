@@ -11,10 +11,18 @@ export default function ProductSearch() {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const snapshot = await getDocs(collection(db, 'products'));
-      const data = snapshot.docs.map((doc) => doc.data());
-      setAllProducts(data);
-      setLoading(false);
+      try {
+        const snapshot = await getDocs(collection(db, 'products'));
+        const data = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setAllProducts(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setLoading(false);
+      }
     };
 
     fetchProducts();
