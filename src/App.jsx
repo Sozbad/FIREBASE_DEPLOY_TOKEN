@@ -1,27 +1,25 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
 import Home from './pages/Home';
-import About from './pages/About';
 import Blog from './pages/Blog';
-import AdminImport from './pages/AdminImport';
+import About from './pages/About';
+import Contact from './pages/Contact';
 import History from './pages/History';
-import ProductDetail from './pages/ProductDetail';
-import MainLayout from './components/MainLayout';
+import AdminImport from './pages/AdminImport';
 
-export default function App() {
+function App() {
   return (
     <Router>
       <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/admin" element={<AdminImport />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/detail" element={<ProductDetail />} />
-        </Route>
+        <Route path="/" element={<Home />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/history" element={<History />} />
+        <Route path="/adminimport" element={<AdminImport />} />
       </Routes>
     </Router>
   );
 }
+
+export default App;
