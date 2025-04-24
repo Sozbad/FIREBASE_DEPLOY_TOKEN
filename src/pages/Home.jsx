@@ -10,12 +10,19 @@ export default function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       const querySnapshot = await getDocs(collection(db, 'products'));
-      const items = [];
+      const uniqueMap = new Map();
+
       querySnapshot.forEach((doc) => {
-        items.push({ id: doc.id, ...doc.data() });
+        const data = doc.data();
+        const key = data.name?.toLowerCase().trim(); // de-dupe by name
+        if (key && !uniqueMap.has(key)) {
+          uniqueMap.set(key, { id: doc.id, ...data });
+        }
       });
-      setProducts(items);
+
+      setProducts(Array.from(uniqueMap.values()));
     };
+
     fetchProducts();
   }, []);
 
@@ -59,7 +66,7 @@ export default function Home() {
         <ProductSearch />
       </div>
 
-      {/* Popular Products Grid */}
+      {/* Product Grid */}
       <div className="max-w-6xl mx-auto px-4 mt-12">
         <h3 className="text-lg font-semibold mb-4">Popular:</h3>
         <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
