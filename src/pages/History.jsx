@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Layout from '../components/Layout';
 import { Clock, Trash2 } from 'lucide-react';
 
 export default function History() {
@@ -15,16 +16,16 @@ export default function History() {
   };
 
   return (
-    <div className="min-h-screen bg-white px-6 py-10 max-w-2xl mx-auto">
+    <Layout>
       <h1 className="text-2xl font-bold text-[#2e7d32] mb-4">Search History</h1>
-      <p className="text-sm text-gray-600 mb-6">Your recently searched product terms.</p>
+      <p className="text-sm text-gray-600 mb-4">Your recently searched terms.</p>
 
       {items.length === 0 ? (
         <p className="text-sm text-gray-500">No recent searches found.</p>
       ) : (
         <div className="space-y-4">
           {items.map((term, i) => (
-            <div key={i} className="flex justify-between items-center bg-gray-50 border px-4 py-3 rounded-xl shadow-sm">
+            <div key={i} className="flex justify-between items-center bg-white border px-4 py-3 rounded-xl shadow-sm">
               <div className="flex items-center gap-2 text-sm text-gray-800">
                 <Clock className="w-4 h-4 text-gray-500" />
                 {term}
@@ -46,6 +47,6 @@ export default function History() {
           </button>
         </div>
       )}
-    </div>
+    </Layout>
   );
 }
