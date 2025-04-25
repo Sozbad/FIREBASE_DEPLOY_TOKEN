@@ -12,7 +12,6 @@ export default function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [swaps, setSwaps] = useState([]);
 
-  // Helper to calculate average score
   const getAvgScore = (p) =>
     (Number(p.health || 0) + Number(p.environment || 0) + Number(p.handling || 0)) / 3;
 
@@ -24,7 +23,6 @@ export default function ProductDetail() {
         const data = snap.data();
         setProduct(data);
 
-        // fetch all, filter better matches
         const all = await getDocs(collection(db, 'products'));
         const allData = all.docs.map((d) => ({ id: d.id, ...d.data() }));
 
@@ -55,26 +53,55 @@ export default function ProductDetail() {
     <Layout>
       <div className="text-center">
         <h1 className="text-2xl font-bold text-[#2e7d32] mb-2">{product.name}</h1>
+
+        {/* ✅ Use correct image field */}
         <img
-          src={product.imageUrl || '/images/placeholder.jpg'}
+          src={product.image || '/images/placeholder.jpg'}
           alt={product.name}
           className="mx-auto h-24 my-4"
         />
+
+        {/* ✅ Optional description */}
+        {product.description && (
+          <p className="text-sm text-gray-600 italic mb-2">{product.description}</p>
+        )}
+
         <ScoreBreakdownPie
           health={product.health}
           environment={product.environment}
           handling={product.handling}
         />
+
+        {/* ✅ Hazard icons */}
         {product.hazards?.length > 0 && (
           <div className="mt-4">
             <HazardIcons codes={product.hazards} />
           </div>
         )}
+
         <p className="text-sm text-gray-600 mt-4">
           Function: <strong>{product.function || 'Uncategorized'}</strong>
         </p>
+
+        {/* ✅ SDS Link */}
+        {product.sds_url && (
+          <a
+            href={product.sds_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 underline mt-4 block"
+          >
+            View SDS Document
+          </a>
+        )}
+
+        {/* ✅ Source */}
+        {product.source && (
+          <p className="text-xs text-gray-500 mt-1">Source: {product.source}</p>
+        )}
       </div>
 
+      {/* ✅ Swap suggestions */}
       {swaps.length > 0 && (
         <div className="mt-10">
           <h2 className="text-lg font-semibold text-[#2e7d32] mb-4">Better-rated alternatives:</h2>
