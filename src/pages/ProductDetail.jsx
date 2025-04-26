@@ -104,12 +104,15 @@ export default function ProductDetail() {
 
       {/* ✅ Swap suggestions */}
       {swaps.length > 0 && (
-  <div className="mt-10">
-    <h2 className="text-lg font-semibold text-[#2e7d32] mb-4">Better-rated alternatives:</h2>
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-      {swaps.map((swap) => (
-        <ProductCard key={swap.id} {...swap} />
-      ))} {/* ✅ close map() here */}
-    </div> {/* ✅ close grid div here */}
-  </div> /* ✅ close swap suggestion section here */
-)}
+        <div className="mt-10">
+          <h2 className="text-lg font-semibold text-[#2e7d32] mb-4">Better-rated alternatives:</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {swaps.map((swap) => (
+              <ProductCard key={swap.id} {...swap} />
+            ))}
+          </div>
+        </div>
+      )}
+    </Layout>
+  );
+}
