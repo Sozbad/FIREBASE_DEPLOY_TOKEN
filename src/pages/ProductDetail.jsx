@@ -31,7 +31,8 @@ export default function ProductDetail() {
           p.function &&
           data.function &&
           p.function === data.function &&
-          getAvgScore(p) > getAvgScore(data)
+          getAvgScore(p) > getAvgScore(data) &&
+          getAvgScore(p) >= 7
         );
 
         setSwaps(alternatives);
@@ -54,9 +55,9 @@ export default function ProductDetail() {
       <div className="text-center">
         <h1 className="text-2xl font-bold text-[#2e7d32] mb-2">{product.name}</h1>
 
-        {/* ✅ Use correct image field */}
+        {/* ✅ Smart image check */}
         <img
-          src={product.image || '/images/placeholder.jpg'}
+          src={product.image?.startsWith('http') ? product.image : '/images/placeholder.jpg'}
           alt={product.name}
           className="mx-auto h-24 my-4"
         />
@@ -107,11 +108,4 @@ export default function ProductDetail() {
           <h2 className="text-lg font-semibold text-[#2e7d32] mb-4">Better-rated alternatives:</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {swaps.map((swap) => (
-              <ProductCard key={swap.id} {...swap} />
-            ))}
-          </div>
-        </div>
-      )}
-    </Layout>
-  );
-}
+              <ProductCard key={swap.id} {...s
