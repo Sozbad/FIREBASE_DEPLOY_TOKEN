@@ -30,4 +30,41 @@ const SearchBar = ({ onProductSelected }) => {
       );
       setFilteredProducts(filtered.slice(0, 10)); // limit to 10 suggestions
     } else {
-      setFilteredProducts([]
+      setFilteredProducts([]);
+    }
+  };
+
+  const handleSuggestionClick = (product) => {
+    setSearchInput(product.name);
+    setFilteredProducts([]);
+    onProductSelected(product); // pass selected product back to parent
+  };
+
+  return (
+    <div className="w-full max-w-lg mx-auto p-4">
+      <input
+        type="text"
+        placeholder="Search for a product..."
+        className="w-full p-2 border rounded"
+        value={searchInput}
+        onChange={handleInputChange}
+      />
+
+      {filteredProducts.length > 0 && (
+        <div className="bg-white border mt-1 rounded shadow">
+          {filteredProducts.map((product) => (
+            <div
+              key={product.id}
+              onClick={() => handleSuggestionClick(product)}
+              className="p-2 hover:bg-green-100 cursor-pointer"
+            >
+              {product.name}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default SearchBar;
