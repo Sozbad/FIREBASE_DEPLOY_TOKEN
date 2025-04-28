@@ -1,6 +1,7 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
-import ProductSearch from "../components/ProductSearch";
+import SearchBar from "../components/SearchBar"; // Make sure you renamed ProductSearch to SearchBar
 
 const mockProducts = [
   {
@@ -24,9 +25,15 @@ const mockProducts = [
 ];
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  const handleProductSelected = (product) => {
+    navigate(`/product/${product.id}`);
+  };
+
   return (
     <div className="min-h-screen bg-[#e6f4e8]">
-      {/* Top nav only */}
+      {/* Top nav */}
       <header className="bg-[#2e7d32] text-white py-4 shadow-md sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
           <h1 className="text-lg font-bold tracking-wide">EcoRank</h1>
@@ -46,7 +53,7 @@ const Home = () => {
           Search or scan any product to reveal its safety rating, eco impact, and safer swaps.
         </p>
         <div className="max-w-xl mx-auto">
-          <ProductSearch />
+          <SearchBar onProductSelected={handleProductSelected} />
         </div>
       </section>
 
