@@ -1,118 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase';
-import Layout from '../components/Layout';
-import ScoreBreakdownPie from '../components/ScoreBreakdownPie';
-import HazardIcons from '../components/HazardIcons';
-import ProductCard from '../components/ProductCard';
+import React, { useEffect, useState } from "react";
+import { db } from "../firebase"; // adjust path if needed
+import { doc, getDoc } from "firebase/firestore";
+import { useParams } from "react-router-dom";
 
-export default function ProductDetail() {
+const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const [swaps, setSwaps] = useState([]);
-
-  const getAvgScore = (p) =>
-    (Number(p.health || 0) + Number(p.environment || 0) + Number(p.handling || 0)) / 3;
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const ref = doc(db, 'products', id);
-      const snap = await getDoc(ref);
-      if (snap.exists()) {
-        const data = snap.data();
-        setProduct(data);
-
-        const all = await getDocs(collection(db, 'products'));
-        const allData = all.docs.map((d) => ({ id: d.id, ...d.data() }));
-
-        const alternatives = allData.filter((p) =>
-          p.id !== id &&
-          p.function &&
-          data.function &&
-          p.function === data.function &&
-          getAvgScore(p) > getAvgScore(data) &&
-          getAvgScore(p) >= 7
-        );
-
-        setSwaps(alternatives);
+      try {
+        const docRef = doc(db, "products", id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setProduct(docSnap.data());
+        } else {
+          console.log("No such product!");
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
       }
     };
 
     fetchProduct();
   }, [id]);
 
-  if (!product) {
-    return (
-      <Layout>
-        <p className="text-sm text-gray-500">Loading product...</p>
-      </Layout>
-    );
-  }
+  if (!product) return <div className="p-6 text-center">Loading Product...</div>;
 
   return (
-    <Layout>
-      <div className="text-center">
-        <h1 className="text-2xl font-bold text-[#2e7d32] mb-2">{product.name}</h1>
+    <div className="p-6 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold text-[#2e7d32] mb-4">{product.name}</h1>
+      <p>Score: {product.score}</p>
+      <p>Primary Category: {product.primary_category}</p>
+      <p>Subcategory: {product.subcategory}</p>
+      <p>Recommended: {product.recommended ? "Yes" : "No"}</p>
 
-        {/* ✅ Smart image check */}
-        <img
-          src={product.image?.startsWith('http') ? product.image : '/images/placeholder.jpg'}
-          alt={product.name}
-          className="mx-auto h-24 my-4"
-        />
-
-        {/* ✅ Optional description */}
-        {product.description && (
-          <p className="text-sm text-gray-600 italic mb-2">{product.description}</p>
-        )}
-
-        <ScoreBreakdownPie
-          health={product.health}
-          environment={product.environment}
-          handling={product.handling}
-        />
-
-        {/* ✅ Hazard icons */}
-        {product.hazards?.length > 0 && (
-          <div className="mt-4">
-            <HazardIcons codes={product.hazards} />
-          </div>
-        )}
-
-        <p className="text-sm text-gray-600 mt-4">
-          Function: <strong>{product.function || 'Uncategorized'}</strong>
-        </p>
-
-        {/* ✅ SDS Link */}
-        {product.sds_url && (
-          <a
-            href={product.sds_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 underline mt-4 block"
-          >
-            View SDS Document
-          </a>
-        )}
-
-        {/* ✅ Source */}
-        {product.source && (
-          <p className="text-xs text-gray-500 mt-1">Source: {product.source}</p>
-        )}
+      {/* Show hazards */}
+      <div className="mt-6">
+        <h2 className="text-xl font-semibold mb-2">Hazards:</h2>
+        <ul className="list-disc list-inside">
+          {product.hazards && product.hazards.map((hazard, index) => (
+            <li key={index}>{hazard}</li>
+          ))}
+        </ul>
       </div>
 
-      {/* ✅ Swap suggestions */}
-      {swaps.length > 0 && (
-        <div className="mt-10">
-          <h2 className="text-lg font-semibold text-[#2e7d32] mb-4">Better-rated alternatives:</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {swaps.map((swap) => (
-              <ProductCard key={swap.id} {...swap} />
-            ))}
-          </div>
-        </div>
-      )}
-    </Layout>
+      {/* Later: Add pie chart or risk breakdown here! */}
+    </div>
   );
-}
+};
+
+export default ProductDetail;
