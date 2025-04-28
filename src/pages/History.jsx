@@ -1,52 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import Layout from '../components/Layout';
-import { Clock, Trash2 } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function History() {
-  const [items, setItems] = useState([]);
+const History = () => {
+  const [history, setHistory] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('recentSearches')) || [];
-    setItems(saved);
+    const storedHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+    setHistory(storedHistory);
   }, []);
 
-  const clearHistory = () => {
-    localStorage.removeItem('recentSearches');
-    setItems([]);
+  const handleProductClick = (product) => {
+    navigate(`/product/${product.id}`);
   };
 
   return (
-    <Layout>
-      <h1 className="text-2xl font-bold text-[#2e7d32] mb-4">Search History</h1>
-      <p className="text-sm text-gray-600 mb-4">Your recently searched terms.</p>
+    <div className="min-h-screen bg-[#e6f4e8] py-10 px-4">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-2xl font-bold text-[#2e7d32] mb-8">Your Search History</h1>
 
-      {items.length === 0 ? (
-        <p className="text-sm text-gray-500">No recent searches found.</p>
-      ) : (
-        <div className="space-y-4">
-          {items.map((term, i) => (
-            <div key={i} className="flex justify-between items-center bg-white border px-4 py-3 rounded-xl shadow-sm">
-              <div className="flex items-center gap-2 text-sm text-gray-800">
-                <Clock className="w-4 h-4 text-gray-500" />
-                {term}
-              </div>
-              <button
-                onClick={() => (window.location.href = `/?q=${encodeURIComponent(term)}`)}
-                className="text-xs text-blue-600 hover:underline"
+        {history.length === 0 ? (
+          <p className="text-gray-600">You have no recent products viewed yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {history.map((item, index) => (
+              <div
+                key={index}
+                onClick={() => handleProductClick(item)}
+                className="bg-white rounded-lg shadow-md p-4 hover:bg-green-100 cursor-pointer"
               >
-                Search again
-              </button>
-            </div>
-          ))}
-          <button
-            onClick={clearHistory}
-            className="text-sm text-red-600 hover:underline mt-6 flex items-center gap-1"
-          >
-            <Trash2 className="w-4 h-4" />
-            Clear all history
-          </button>
-        </div>
-      )}
-    </Layout>
+                <h2 className="text-lg font-bold mb-2">{item.name}</h2>
+                <p className="text-sm">Score: {item.score !== null ? item.score : "N/A"}</p>
+                <p className="text-sm">Category: {item.primary_category}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
-}
+};
+
+export default History;
