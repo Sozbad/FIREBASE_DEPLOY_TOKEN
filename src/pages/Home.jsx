@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
-import SearchBar from "../components/SearchBar"; // Make sure you renamed ProductSearch to SearchBar
+import SearchBar from "../components/SearchBar"; // Make sure you have the right path
 
 const mockProducts = [
   {
@@ -27,13 +27,31 @@ const mockProducts = [
 const Home = () => {
   const navigate = useNavigate();
 
+  const addToHistory = (product) => {
+    let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
+
+    // Add newest clicked product at the top
+    history.unshift({
+      id: product.id,
+      name: product.name,
+      score: product.score || null,
+      primary_category: product.primary_category || "",
+    });
+
+    // Limit to last 10 items
+    history = history.slice(0, 10);
+
+    localStorage.setItem("searchHistory", JSON.stringify(history));
+  };
+
   const handleProductSelected = (product) => {
-    navigate(`/product/${product.id}`);
+    addToHistory(product); // Save clicked product to history
+    navigate(`/product/${product.id}`); // Navigate to Product Detail page
   };
 
   return (
     <div className="min-h-screen bg-[#e6f4e8]">
-      {/* Top nav */}
+      {/* Top Navigation */}
       <header className="bg-[#2e7d32] text-white py-4 shadow-md sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
           <h1 className="text-lg font-bold tracking-wide">EcoRank</h1>
@@ -46,7 +64,7 @@ const Home = () => {
         </div>
       </header>
 
-      {/* Hero + Search */}
+      {/* Hero Section + Search */}
       <section className="text-center py-10 px-6">
         <h2 className="text-3xl font-bold mb-2 text-[#1b5e20]">Find Greener and Safer Product Swaps</h2>
         <p className="text-gray-700 max-w-xl mx-auto mb-6 text-sm">
@@ -57,7 +75,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* How it works */}
+      {/* How it works Section */}
       <section className="bg-white mx-4 rounded-2xl shadow-lg py-8 px-6 max-w-4xl mx-auto mb-10">
         <h3 className="text-lg font-semibold mb-6 text-gray-800 text-center">How it works</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
